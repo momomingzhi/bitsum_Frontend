@@ -1,44 +1,45 @@
 /** @format */
 
-import { IRemovable, RemoveState } from './models/Removable';
-import { IObserver } from './Observer';
-import Todo from './Todo';
+import { IRemovable, RemoveState } from "./models/Removable";
+import { IObserver } from "./Observer";
+import Todo from "./Todo";
 // import {RemoveState,IRemovable} from './models/Removable'
 // import {IObserver} from './Observer'
 class TodoList implements IRemovable, IObserver {
-    private readonly todos: Todo[];
-    private removeState: RemoveState;
-    constructor() {
-        this.todos = [new Todo('테스트')];
-        this.removeState = RemoveState.IDLE;
-        this.add = this.add.bind(this);
-        this.remove = this.remove.bind(this);
-        this.notifyAddTodo = this.notifyAddTodo.bind(this);
-        this.notifyRemoveTodo = this.notifyRemoveTodo.bind(this);
-    }
+  private readonly todos: Todo[];
+  private removeState: RemoveState;
+  constructor() {
+    this.todos = [new Todo("테스트")];
+    this.removeState = RemoveState.IDLE;
+    this.add = this.add.bind(this);
+    this.remove = this.remove.bind(this);
+    this.notifyAddTodo = this.notifyAddTodo.bind(this);
+    this.notifyRemoveTodo = this.notifyRemoveTodo.bind(this);
+  }
 
-    getTodos() {
-        return this.todos.filter(
-            (todo) => todo.getRemoveState() !== RemoveState.REMOVE
-        );
+  getTodos() {
+    return this.todos.filter(
+      (todo) => todo.getRemoveState() !== RemoveState.REMOVE
+    );
+  }
+  add(message: string) {
+    this.todos.push(new Todo(message));
+  }
+  remove() {
+    if (this.removeState !== RemoveState.REMOVE) {
+      this.removeState = RemoveState.REMOVE;
     }
-    add(message: string) {
-        this.todos.push(new Todo(message));
-    }
-    remove() {
-        if (this.removeState !== RemoveState.REMOVE)
-            this.removeState = RemoveState.REMOVE;
-    }
-    getRemoveState() {
-        return this.removeState;
-    }
-    notifyAddTodo(message: string) {
-        this.add(message);
-    }
-    notifyRemoveTodo() {
-        this.todos.forEach((todo) => {
-            todo.remove();
-        });
-    }
+  }
+  getRemoveState() {
+    return this.removeState;
+  }
+  notifyAddTodo(message: string) {
+    this.add(message);
+  }
+  notifyRemoveTodo() {
+    this.todos.forEach((todo) => {
+      todo.remove();
+    });
+  }
 }
 export default TodoList;
