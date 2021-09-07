@@ -1,7 +1,7 @@
 /** @format */
 
 import { IRemovable, RemoveState } from './models/Removable';
-
+// TODO 객체를 추상화한 Todo 클래스
 class Todo implements IRemovable {
     private removeState: RemoveState;
     private readonly message: string;
