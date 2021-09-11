@@ -1,7 +1,7 @@
 /** @format */
 
 import * as postsAPI from '../api/posts'; // api/posts 안의 함수 모두 불러오기
-
+import { createPromiseThunk, reducerUtils } from '../lib/asyncUtils';
 /*액션 타입 */
 // 포스트 여러개 조회하기
 const GET_POSTS = 'GET_POSTS'; // 요청 시작
@@ -13,7 +13,7 @@ const GET_POST = 'GET_POST';
 const GET_POST_SUCCESS = 'GET_POST_SUCCESS';
 const GET_POST_ERROR = 'GET_POST_ERROR';
 
-export const getPosts = () => async (dispatch) => {
+/*export const getPosts = () => async (dispatch) => {
     dispatch({ type: GET_POSTS });
     try {
         const posts = await postsAPI.getPosts();
@@ -30,7 +30,10 @@ export const getPost = (id) => async (dispatch) => {
     } catch (e) {
         dispatch({ type: GET_POST_ERROR, error: e }); // 실패
     }
-};
+};*/
+// thunk 함수로 리팩토링
+export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
+export const getPost = createPromiseThunk(GET_POST, postsAPI.getPostById);
 const initialState = {
     posts: {
         loading: false,
