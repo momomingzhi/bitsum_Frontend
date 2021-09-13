@@ -1,6 +1,6 @@
 /** @format */
 
-import * as postsAPI from '../api/posts'; // api/posts 안의 함수 모두 불러오기
+import * as postsAPI from '../api/post'; // api/posts 안의 함수 모두 불러오기
 import { createPromiseThunk, reducerUtils } from '../lib/asyncUtils';
 /*액션 타입 */
 // 포스트 여러개 조회하기
@@ -34,7 +34,7 @@ export const getPost = (id) => async (dispatch) => {
 // thunk 함수로 리팩토링
 export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
 export const getPost = createPromiseThunk(GET_POST, postsAPI.getPostById);
-const initialState = {
+/*const initialState = {
     posts: {
         loading: false,
         data: null,
@@ -45,62 +45,43 @@ const initialState = {
         data: null,
         error: null,
     },
+};*/
+const initialState = {
+    posts: reducerUtils.initial(),
+    post: reducerUtils.initial(),
 };
+
 export default function posts(state = initialState, action) {
     switch (action.type) {
         case GET_POSTS:
             return {
                 ...state,
-                posts: {
-                    loading: true,
-                    data: null,
-                    error: null,
-                },
+                posts: reducerUtils.loading(),
             };
         case GET_POSTS_SUCCESS:
             return {
                 ...state,
-                posts: {
-                    loading: true,
-                    data: action.posts,
-                    error: null,
-                },
+                posts: reducerUtils.success(action.payload), // action.posts -> action.payload 로 변경됐습니다.
             };
         case GET_POSTS_ERROR:
             return {
                 ...state,
-                posts: {
-                    loading: true,
-                    data: null,
-                    error: action.error,
-                },
+                posts: reducerUtils.error(action.error),
             };
         case GET_POST:
             return {
                 ...state,
-                post: {
-                    loading: true,
-                    data: null,
-                    error: null,
-                },
+                post: reducerUtils.loading(),
             };
         case GET_POST_SUCCESS:
             return {
                 ...state,
-                post: {
-                    loading: true,
-                    data: action.post,
-                    error: null,
-                },
+                post: reducerUtils.success(action.payload), // action.post -> action.payload 로 변경됐습니다.
             };
         case GET_POST_ERROR:
             return {
                 ...state,
-                post: {
-                    loading: true,
-                    data: null,
-                    error: action.error,
-                },
+                post: reducerUtils.error(action.error),
             };
         default:
             return state;

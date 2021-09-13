@@ -10,12 +10,16 @@ import { Provider } from 'react-redux';
 import rootReducer from './modules';
 import myLogger from './middlewares/myLogger';
 import ReduxThunk from 'redux-thunk';
+import { BrowserRouter } from 'react-router-dom';
+
 //스토어에 미들웨어 적용할때 applyMiddleware 사용
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk, myLogger));
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
+    <BrowserRouter>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </BrowserRouter>,
     document.getElementById('root')
 );
 
